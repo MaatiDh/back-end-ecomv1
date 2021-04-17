@@ -16,7 +16,7 @@ public class UtilisateurDTO {
 
     private String prenom;
 
-    private String nomUtilisateur;
+    private String login;
 
     private String email;
 
@@ -26,10 +26,8 @@ public class UtilisateurDTO {
     private String ville;
 
     private String tel;
-
     private Role role;
-
-    private String token;
-
+    //private String token;
     private Panier panier;
+    private String adresse;
 }

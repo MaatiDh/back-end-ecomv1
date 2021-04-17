@@ -5,11 +5,12 @@ public class ColumnNameConstants {
 
     public static final String NOM = "nom";
     public static final String PRENOM = "prenom";
-    public static final String NOM_UTILISATEUR = "nom_utilisateur";
+    public static final String LOGIN = "login";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     public static final String VILLE = "ville";
     public static final String TEL = "tel";
+    public static final String ADRESSE = "adresse";
     public static final String ROLE = "role";
     public static final String ID = "id";
     public static final String REFERENCE_ARTICLE = "reference_article";

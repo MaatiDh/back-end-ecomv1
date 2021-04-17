@@ -2,6 +2,7 @@ package com.back.ecom.tp.service;
 
 import com.back.ecom.tp.dao.UtilisateurRepository;
 import com.back.ecom.tp.dto.UtilisateurDTO;
+import com.back.ecom.tp.dto.objHandle.UserRequest;
 import com.back.ecom.tp.entity.Utilisateur;
 import com.back.ecom.tp.enums.Role;
 import com.back.ecom.tp.exception.*;
@@ -41,7 +42,7 @@ public class UtilisateurService {
         if (nomUtilisateur == null) {
             throw new NullValueException(nomUtilisateur);
         }
-        Utilisateur utilisateur = utilisateurRepository.findByNomUtilisateur(nomUtilisateur)
+        Utilisateur utilisateur = utilisateurRepository.findByLogin(nomUtilisateur)
                 .orElseThrow(() -> new NotFoundException(nomUtilisateur));
         return utilisateurMapper.mapToDTO(utilisateur);
     }
@@ -53,7 +54,7 @@ public class UtilisateurService {
         if (utilisateurRepository.findByEmail(utilisateurDTO.getEmail()).isPresent()) {
             throw new AlreadyExistException("email");
         }
-        if (utilisateurRepository.findByNomUtilisateur(utilisateurDTO.getNomUtilisateur()).isPresent()) {
+        if (utilisateurRepository.findByLogin(utilisateurDTO.getLogin()).isPresent()) {
             throw new AlreadyExistException("nom utilisateur");
         }
 
@@ -63,35 +64,38 @@ public class UtilisateurService {
         if(!matcher.matches())
             throw new WrongEmailException();
         String password=utilisateurDTO.getPassword();
+
         utilisateurDTO.setPassword(passwordEncoder.encode(utilisateurDTO.getPassword()));
+
         utilisateurDTO.setRole(Role.ROLE_CLIENT);
+
         Utilisateur utilisateur = utilisateurRepository.save(utilisateurMapper.mapToEntity(utilisateurDTO));
-        sendMail(utilisateurDTO.getEmail(),utilisateurDTO.getNomUtilisateur(),password);
+        sendMail(utilisateurDTO.getEmail(),utilisateurDTO.getLogin(),password);
 
         return utilisateurMapper.mapToDTO(utilisateur);
     }
 
     @Transactional
-    public UtilisateurDTO authentification(UtilisateurDTO utilisateur) {
-        if (utilisateur == null) {
+    public UtilisateurDTO authentification(UserRequest user) {
+        if (user == null) {
             throw new NullValueException("utilisateur");
         }
-        if (utilisateur.getNomUtilisateur() == null) {
+        if (user.getLogin() == null) {
             throw new NullValueException("login");
         }
-        if (utilisateur.getPassword() == null) {
+        if (user.getPassword() == null) {
             throw new NullValueException("password");
         }
-        String utilisateurname = utilisateur.getNomUtilisateur();
+        String utilisateurname = user.getLogin();
         UtilisateurDTO utilisateurDto = findByNomUtilisateur(utilisateurname);
 
-        if (!passwordEncoder.matches(utilisateur.getPassword(), utilisateurDto.getPassword())) {
+        if (!passwordEncoder.matches(user.getPassword(), utilisateurDto.getPassword())) {
             throw new WrongPasswordException(Utilisateur.class);
         }
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(utilisateurname, utilisateur.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(utilisateurname, user.getPassword()));
 
-        utilisateurDto.setToken(jwtTokenProvider.createToken(utilisateurname, findByNomUtilisateur(utilisateurname).getRole()));
+     //   utilisateurDto.setToken(jwtTokenProvider.createToken(utilisateurname, findByNomUtilisateur(utilisateurname).getRole()));
 
         return utilisateurDto;
     }
@@ -108,7 +112,7 @@ public class UtilisateurService {
         if (newPassword == null) {
             throw new NullValueException("newPassword");
         }
-        Utilisateur utilisateur = utilisateurRepository.findByEmail(nomUtilisateur)
+        Utilisateur utilisateur = utilisateurRepository.findByLogin(nomUtilisateur)
                 .orElseThrow(() -> new NotFoundException(nomUtilisateur));
         if (passwordEncoder.matches(currentPassword, utilisateur.getPassword())) {
             utilisateur.setPassword(passwordEncoder.encode(newPassword));
@@ -135,7 +139,7 @@ public class UtilisateurService {
         if (utilisateurDTO.getNom() == null || utilisateurDTO.getNom().isEmpty()) {
             nullFields.add("Nom");
         }
-        if (utilisateurDTO.getNomUtilisateur() == null || utilisateurDTO.getNomUtilisateur().isEmpty()) {
+        if (utilisateurDTO.getLogin() == null || utilisateurDTO.getLogin().isEmpty()) {
             nullFields.add("Nom Utilisateur");
         }
         if (utilisateurDTO.getPrenom() == null || utilisateurDTO.getPrenom().isEmpty()) {

@@ -26,7 +26,6 @@ public class PanierService {
     private final PanierMapper panierMapper;
     private final PanierRepository panierRepository;
     private final UtilisateurRepository utilisateurRepository;
-
     private final EmailHtmlSender emailHtmlSender;
     private final ArticleRepository articleRepository;
 

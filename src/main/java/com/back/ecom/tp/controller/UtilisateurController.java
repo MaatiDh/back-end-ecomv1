@@ -2,6 +2,7 @@ package com.back.ecom.tp.controller;
 
 import com.back.ecom.tp.dto.UtilisateurDTO;
 import com.back.ecom.tp.dto.objHandle.ChangePassword;
+import com.back.ecom.tp.dto.objHandle.UserRequest;
 import com.back.ecom.tp.service.UtilisateurService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,9 @@ public class UtilisateurController {
     }
 
     @PostMapping(value = "/authentification")
-    public ResponseEntity<UtilisateurDTO> authentification(@RequestBody UtilisateurDTO utilisateurDTO) {
+    public ResponseEntity<UtilisateurDTO> authentification(@RequestBody UserRequest userRequest) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(utilisateurService.authentification(utilisateurDTO));
+                .body(utilisateurService.authentification(userRequest));
     }
 
     @PutMapping(value = "/changepassword")

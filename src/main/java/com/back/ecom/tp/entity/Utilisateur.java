@@ -34,8 +34,8 @@ public class Utilisateur implements UserDetails, Serializable {
     @Column(name = PRENOM)
     private String prenom;
 
-    @Column(name = NOM_UTILISATEUR,unique = true)
-    private String nomUtilisateur;
+    @Column(name = LOGIN,unique = true)
+    private String login;
 
     @Column(name = EMAIL,unique = true)
     private String email;
@@ -52,6 +52,9 @@ public class Utilisateur implements UserDetails, Serializable {
     @Column(name = ROLE)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = ADRESSE)
+    private String adresse;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

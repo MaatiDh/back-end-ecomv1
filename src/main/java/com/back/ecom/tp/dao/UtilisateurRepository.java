@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>, JpaSpecificationExecutor<Utilisateur> {
 
-    Optional<Utilisateur> findByNomUtilisateur(String nomUtilisateur);
+    Optional<Utilisateur> findByLogin(String login);
     Optional<Utilisateur> findByEmail(String email);
 }
