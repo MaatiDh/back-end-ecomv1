@@ -28,12 +28,15 @@ public class ArticleService {
 
     @Transactional
     public List<ArticleDTO> rechercheArticle(String recherche){
-
-        List<Article> articleList=articleRepository.findAll(Specification.where(
-                ArticleSpecification.findBy("referenceArticle",recherche)
-                .and(ArticleSpecification.findBy("designation",recherche))
-        ));
-
+        List<Article> articleList;
+        if (recherche!=null || recherche !="") {
+            articleList = articleRepository.findAll(Specification.where(
+                    ArticleSpecification.findBy("referenceArticle", recherche)
+                            .and(ArticleSpecification.findBy("designation", recherche))
+            ));
+        }else {
+            articleList = articleRepository.findAll();
+        }
         return articleMapper.mapToListOfDTO(articleList);
     }
 
@@ -54,6 +57,12 @@ public class ArticleService {
             throw new AlreadyExistException("Designation");
 
         return articleMapper.mapToDTO(articleRepository.save(articleMapper.mapToEntity(articleDTO)));
+    }
+    @Transactional
+    public List<ArticleDTO> ajouterArticles(List<ArticleDTO> articleDTOs){
+
+        //todo check fiels validation
+        return articleMapper.mapToListOfDTO(articleRepository.saveAll(articleMapper.mapToListOfEntity(articleDTOs)));
     }
 
     @Transactional

@@ -27,7 +27,7 @@ public class UtilisateurDTO {
 
     private String tel;
     private Role role;
-    //private String token;
+    private String token;
     private Panier panier;
     private String adresse;
 }

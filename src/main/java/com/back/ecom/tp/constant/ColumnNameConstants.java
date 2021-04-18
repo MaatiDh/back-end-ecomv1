@@ -21,4 +21,5 @@ public class ColumnNameConstants {
     public static final String PANIER_ID = "panier_id";
     public static final String ARTICLE_ID = "article_id";
     public static final String QUANTITE = "quantite";
+    public static final String ISEDITABLE = "iseditable";
 }

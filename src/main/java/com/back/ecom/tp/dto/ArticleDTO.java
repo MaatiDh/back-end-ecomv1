@@ -20,4 +20,5 @@ public class ArticleDTO {
     private Double prix;
 
     private Integer stock;
+    private Boolean isEditable;
 }

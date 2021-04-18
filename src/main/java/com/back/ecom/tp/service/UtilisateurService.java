@@ -95,7 +95,7 @@ public class UtilisateurService {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(utilisateurname, user.getPassword()));
 
-     //   utilisateurDto.setToken(jwtTokenProvider.createToken(utilisateurname, findByNomUtilisateur(utilisateurname).getRole()));
+        utilisateurDto.setToken(jwtTokenProvider.createToken(utilisateurname, findByNomUtilisateur(utilisateurname).getRole()));
 
         return utilisateurDto;
     }

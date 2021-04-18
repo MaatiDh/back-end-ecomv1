@@ -19,7 +19,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT','ROLE_ADMINISTRATEUR')")
     public ResponseEntity<List<ArticleDTO>> rechercheArticle(@RequestParam(value = "recherche") String recherche) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(articleService.rechercheArticle(recherche));
@@ -37,6 +37,12 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> ajouterArticle(@RequestBody ArticleDTO articleDTO) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(articleService.ajouterArticle(articleDTO));
+    }
+    @PostMapping("/saveAll")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATEUR')")
+    public ResponseEntity<List<ArticleDTO>> ajouterArticles(@RequestBody List<ArticleDTO> articleDTOs) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(articleService.ajouterArticles(articleDTOs));
     }
 
     @PutMapping(value = "/{id}")

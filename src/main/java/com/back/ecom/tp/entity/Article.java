@@ -31,4 +31,7 @@ public class Article {
 
     @Column(name = STOCK)
     private Integer stock;
+
+    @Column(name = ISEDITABLE)
+    private Boolean isEditable;
 }
